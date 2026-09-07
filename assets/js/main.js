@@ -20,6 +20,10 @@
     document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
       btn.textContent = lang === 'ar' ? 'English' : 'العربية';
     });
+    document.querySelectorAll('[data-raw-value]').forEach(function (el) {
+      var n = parseInt(el.getAttribute('data-raw-value'), 10) || 0;
+      el.textContent = n.toLocaleString(lang === 'en' ? 'en-US' : 'ar-SA');
+    });
   }
   applyLang();
 
@@ -113,7 +117,8 @@
       if (!startTime) startTime = ts;
       var progress = Math.min(1, (ts - startTime) / duration);
       var value = Math.round(start + (count - start) * progress);
-      counterEl.textContent = value.toLocaleString('ar-SA');
+      counterEl.setAttribute('data-raw-value', value);
+      counterEl.textContent = value.toLocaleString(lang === 'en' ? 'en-US' : 'ar-SA');
       if (progress < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -135,7 +140,8 @@
             if (!startTime) startTime = ts;
             var progress = Math.min(1, (ts - startTime) / duration);
             var value = Math.round(start + (target - start) * progress);
-            el.textContent = value.toLocaleString('ar-SA');
+            el.setAttribute('data-raw-value', value);
+            el.textContent = value.toLocaleString(lang === 'en' ? 'en-US' : 'ar-SA');
             if (progress < 1) requestAnimationFrame(step);
           }
           requestAnimationFrame(step);
