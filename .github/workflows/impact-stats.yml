@@ -1,0 +1,54 @@
+name: Update impact stats
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch stats from GoatCounter and write JSON
+        env:
+          GOATCOUNTER_API_KEY: ${{ secrets.GOATCOUNTER_API_KEY }}
+        run: |
+          set -euo pipefail
+          SITE="https://amansafety2026.goatcounter.com"
+          AUTH="Authorization: Bearer $GOATCOUNTER_API_KEY"
+
+          total_json=$(curl -sf -H "$AUTH" "$SITE/api/v0/stats/total")
+          visitors=$(echo "$total_json" | jq '.total // 0')
+
+          quiz_json=$(curl -sf -H "$AUTH" "$SITE/api/v0/stats/hits?include_paths=quiz-completed&path_by_name=true")
+          quizzes=$(echo "$quiz_json" | jq '.hits[0].count // 0')
+
+          # عدد المواد التوعوية بمكتبة أمان — قيمة ثابتة تُحدَّث يدويًا بالكود
+          # كل ما تُضاف مادة جديدة (دليل/إنفوجرافيك/ملصق/فيديو). ليست من التحليلات.
+          materials=20
+
+          updated_at=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          cat > assets/data/impact-stats.json <<EOF
+          {
+            "visitors": $visitors,
+            "quizzes_completed": $quizzes,
+            "materials": $materials,
+            "updated_at": "$updated_at"
+          }
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/data/impact-stats.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update impact stats [skip ci]"
+            git push
+          fi

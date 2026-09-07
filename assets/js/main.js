@@ -118,4 +118,29 @@
     }
     requestAnimationFrame(step);
   }
+
+  // ===== أثر أمان بالأرقام (إحصاءات مجمّعة ومجهولة، تُحدَّث تلقائيًا) =====
+  var impactEls = document.querySelectorAll('[data-impact]');
+  if (impactEls.length) {
+    fetch('assets/data/impact-stats.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data) return;
+        impactEls.forEach(function (el) {
+          var target = parseInt(data[el.getAttribute('data-impact')], 10) || 0;
+          var start = 0;
+          var duration = 900;
+          var startTime = null;
+          function step(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min(1, (ts - startTime) / duration);
+            var value = Math.round(start + (target - start) * progress);
+            el.textContent = value.toLocaleString('ar-SA');
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      })
+      .catch(function () {});
+  }
 })();

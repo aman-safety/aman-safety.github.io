@@ -173,6 +173,9 @@ var AMAN_QUIZ = [
   function renderResult() {
     var lang = getLang();
     var pct = Math.round((score / AMAN_QUIZ.length) * 100);
+    if (window.goatcounter) {
+      window.goatcounter.count({ path: 'quiz-completed', title: 'اختبار مكتمل', event: true });
+    }
     container.innerHTML =
       '<div class="quiz-result">' +
         '<p class="badge">' + t[lang].resultLabel + '</p>' +
