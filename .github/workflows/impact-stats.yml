@@ -22,10 +22,10 @@ jobs:
           SITE="https://amansafety2026.goatcounter.com"
           AUTH="Authorization: Bearer $GOATCOUNTER_API_KEY"
 
-          total_json=$(curl -sf -H "$AUTH" "$SITE/api/v0/stats/total")
+          total_json=$(curl -sf --http1.1 -H "$AUTH" "$SITE/api/v0/stats/total")
           visitors=$(echo "$total_json" | jq '.total // 0')
 
-          quiz_json=$(curl -sf -H "$AUTH" "$SITE/api/v0/stats/hits?include_paths=quiz-completed&path_by_name=true")
+          quiz_json=$(curl -sf --http1.1 -H "$AUTH" "$SITE/api/v0/stats/hits?include_paths=quiz-completed&path_by_name=true")
           quizzes=$(echo "$quiz_json" | jq '.hits[0].count // 0')
 
           # عدد المواد التوعوية بمكتبة أمان — قيمة ثابتة تُحدَّث يدويًا بالكود
