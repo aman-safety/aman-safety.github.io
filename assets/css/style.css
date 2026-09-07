@@ -776,6 +776,19 @@ details.accordion-item summary {
 }
 details.accordion-item summary::-webkit-details-marker { display: none; }
 details.accordion-item[open] summary { margin-bottom: 12px; color: var(--teal-700); }
+details.accordion-item summary > span:last-child {
+  font-size: 0;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+details.accordion-item summary > span:last-child::before {
+  content: "+";
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--teal-600);
+}
+details.accordion-item[open] summary > span:last-child::before { content: "−"; }
 
 /* ===== أقسام مكتبة أمان: بطاقات "قريبًا" ومعرض الطفايات ===== */
 .card-soon { opacity: .55; cursor: default; }

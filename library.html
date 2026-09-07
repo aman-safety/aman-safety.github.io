@@ -171,12 +171,12 @@
           <p class="small" data-ar="ملصق تحذيري عن مخاطر الأرضية الزلقة وطرق الوقاية منها." data-en="A warning poster about slippery floor hazards and how to prevent them.">ملصق تحذيري عن مخاطر الأرضية الزلقة وطرق الوقاية منها.</p>
           <span class="badge" data-ar="ملصق — اضغط للعرض" data-en="Poster — click to view">ملصق — اضغط للعرض</span>
         </button>
-        <div class="card card-soon" aria-disabled="true">
+        <button class="card" style="text-align:right; width:100%; border:1px solid var(--glass-border)" data-open-poster-electrical>
           <div class="card-icon">⚡</div>
           <h3 data-ar="خطر كهربائي" data-en="Electrical Hazard">خطر كهربائي</h3>
-          <p class="small" data-ar="ملصق تحذيري قابل للطباعة — قيد الإعداد." data-en="A printable warning poster — in progress.">ملصق تحذيري قابل للطباعة — قيد الإعداد.</p>
-          <span class="badge badge-soon" data-ar="قريبًا 🔜" data-en="Coming Soon 🔜">قريبًا 🔜</span>
-        </div>
+          <p class="small" data-ar="ملصق تحذيري عن مخاطر الكهرباء وطرق الوقاية منها." data-en="A warning poster about electrical hazards and how to prevent them.">ملصق تحذيري عن مخاطر الكهرباء وطرق الوقاية منها.</p>
+          <span class="badge" data-ar="ملصق — اضغط للعرض" data-en="Poster — click to view">ملصق — اضغط للعرض</span>
+        </button>
       </div>
     </div>
   </section>
@@ -379,6 +379,16 @@
   </div>
 </div>
 
+<!-- لوحة ملصق: خطر كهربائي -->
+<div class="lightbox" data-poster-electrical-modal hidden>
+  <div class="lightbox-inner" style="max-width:700px">
+    <button class="lightbox-close" data-close-poster-electrical aria-label="إغلاق">✕</button>
+    <h3 data-ar="خطر كهربائي" data-en="Electrical Hazard">خطر كهربائي</h3>
+    <p class="small" data-ar="ملصق تحذيري عن مخاطر الكهرباء وطرق الوقاية منها." data-en="A warning poster about electrical hazards and how to prevent them.">ملصق تحذيري عن مخاطر الكهرباء وطرق الوقاية منها.</p>
+    <img class="poster-image" src="assets/img/posters/electrical-hazard.jpg" alt="ملصق خطر كهربائي" loading="lazy">
+  </div>
+</div>
+
 <!-- لوحة دليل: السلامة المرورية -->
 <div class="lightbox" data-traffic-guide-modal hidden>
   <div class="lightbox-inner" style="max-width:700px">
@@ -567,6 +577,16 @@
       posterSlipperyBtn.addEventListener('click', function () { posterSlipperyModal.hidden = false; });
       posterSlipperyClose.addEventListener('click', function () { posterSlipperyModal.hidden = true; });
       posterSlipperyModal.addEventListener('click', function (e) { if (e.target === posterSlipperyModal) posterSlipperyModal.hidden = true; });
+    }
+
+    // ===== ملصق: خطر كهربائي =====
+    var posterElectricalBtn = document.querySelector('[data-open-poster-electrical]');
+    var posterElectricalModal = document.querySelector('[data-poster-electrical-modal]');
+    var posterElectricalClose = document.querySelector('[data-close-poster-electrical]');
+    if (posterElectricalBtn && posterElectricalModal) {
+      posterElectricalBtn.addEventListener('click', function () { posterElectricalModal.hidden = false; });
+      posterElectricalClose.addEventListener('click', function () { posterElectricalModal.hidden = true; });
+      posterElectricalModal.addEventListener('click', function (e) { if (e.target === posterElectricalModal) posterElectricalModal.hidden = true; });
     }
 
     // ===== دليل: السلامة المرورية =====
